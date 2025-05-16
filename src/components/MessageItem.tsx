@@ -11,13 +11,38 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
-  const { addSystemMessage } = useChat();
+  const { addSystemMessage, messages } = useChat();
   const [isReporting, setIsReporting] = useState(false);
   
   const handleReportIssue = async () => {
     setIsReporting(true);
     try {
-      addSystemMessage("Thank you for reporting the issue. Our team will review it shortly.");
+      // Generate conversation history
+      const conversationContext = messages
+        .slice(-5) // Get last 5 messages for context
+        .map(msg => `${msg.sender.toUpperCase()}: ${msg.content}`)
+        .join('\n\n');
+
+      const issueReport = `# Issue Report
+
+## Summary
+User reported an issue with AI assistant response
+
+## Description
+### Recent Conversation Context:
+${conversationContext}
+
+## Steps to Reproduce
+1. Review the conversation history above
+2. Note the specific response or behavior that caused concern
+3. Analyze the interaction pattern
+
+## Additional Information
+- Timestamp: ${new Date().toISOString()}
+- Message Type: ${message.type}
+- Total Messages in Context: ${messages.length}`;
+
+      addSystemMessage("Unable to connect to Jira. Here's the issue report for reference:\n\n" + issueReport);
     } finally {
       setIsReporting(false);
     }
@@ -118,4 +143,4 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   );
 };
 
-export default MessageItem
+export default MessageItem;
