@@ -64,8 +64,8 @@ const ScreenCapture: React.FC = () => {
       top,
       width,
       height,
-      border: '2px dashed #8b5cf6',
-      backgroundColor: 'rgba(139, 92, 246, 0.1)',
+      border: '2px dashed #0ea5e9',
+      backgroundColor: 'rgba(14, 165, 233, 0.1)',
       pointerEvents: 'none',
       zIndex: 9999,
     } as React.CSSProperties;
@@ -80,7 +80,6 @@ const ScreenCapture: React.FC = () => {
       const width = Math.abs(endPos.x - startPos.x);
       const height = Math.abs(endPos.y - startPos.y);
 
-      // Create a canvas with the exact size of the selection
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
@@ -88,14 +87,12 @@ const ScreenCapture: React.FC = () => {
       
       if (!ctx) throw new Error('Could not get canvas context');
 
-      // Capture the entire viewport
       const fullCanvas = await html2canvas(document.body, {
         logging: false,
         useCORS: true,
         allowTaint: true,
       });
 
-      // Draw only the selected portion
       ctx.drawImage(
         fullCanvas,
         left + window.scrollX,
@@ -123,7 +120,7 @@ const ScreenCapture: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         className={`p-2 rounded-full ${
-          isCapturing ? 'bg-red-200 text-red-600' : 'bg-blue-100 text-blue-600'
+          isCapturing ? 'bg-green-200 text-green-600' : 'bg-blue-100 text-blue-600'
         }`}
         onClick={startSelection}
         disabled={isCapturing}

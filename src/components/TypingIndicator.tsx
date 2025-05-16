@@ -14,7 +14,7 @@ const TypingIndicator: React.FC = () => {
           {[0, 1, 2].map(i => (
             <motion.div
               key={i}
-              className="w-2 h-2 rounded-full bg-gray-300"
+              className="w-2 h-2 rounded-full bg-blue-300"
               animate={{
                 y: [0, -5, 0],
               }}
