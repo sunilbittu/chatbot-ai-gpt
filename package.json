@@ -3,7 +3,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "server": "node server.js"
+    "server": "node server.js",
+    "slides:dev": "slidev slides.md",
+    "slides:build": "slidev build slides.md",
+    "slides:export": "slidev export slides.md"
   },
   "dependencies": {
     "@slack/web-api": "^6.11.2",
@@ -19,6 +22,8 @@
     "react-dropzone": "^14.2.3"
   },
   "devDependencies": {
+    "@slidev/cli": "^0.48.0-beta.24",
+    "@slidev/theme-default": "^0.25.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
