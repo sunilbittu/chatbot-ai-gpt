@@ -25,11 +25,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
       const issueReport = `# Issue Report
 
 ## Recent Conversation
-${conversationContext}
-
-## Additional Information
-- Timestamp: ${new Date().toISOString()}
-- Message Type: ${message.type}`;
+${conversationContext}`;
 
       addSystemMessage("Unable to connect to Jira. Here's the issue report for reference:\n\n" + issueReport);
     } finally {
