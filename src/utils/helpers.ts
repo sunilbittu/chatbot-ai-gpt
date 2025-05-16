@@ -67,7 +67,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
 
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
+      model: 'gpt-4.1-mini',
       messages,
       max_tokens: 200, // Reduced from 300 to 200
       temperature: 0.5,
