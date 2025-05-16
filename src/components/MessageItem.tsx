@@ -117,3 +117,5 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
     </motion.div>
   );
 };
+
+export default MessageItem
