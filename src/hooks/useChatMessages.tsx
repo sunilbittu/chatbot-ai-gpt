@@ -35,6 +35,18 @@ export const useChatMessages = () => {
     }]);
   }, []);
 
+  const addSystemMessage = useCallback((content: string) => {
+    const systemMessage: Message = {
+      id: generateId(),
+      content,
+      type: 'text',
+      sender: 'system',
+      timestamp: new Date(),
+      status: 'sent'
+    };
+    setMessages(prev => [...prev, systemMessage]);
+  }, []);
+
   const addMessage = useCallback(async (content: string, type: MessageType) => {
     const userMessage: Message = {
       id: generateId(),
@@ -86,5 +98,5 @@ export const useChatMessages = () => {
     ));
   }, []);
 
-  return { messages, addMessage, clearMessages, isTyping, messagesEndRef };
+  return { messages, addMessage, addSystemMessage, clearMessages, isTyping, messagesEndRef };
 };

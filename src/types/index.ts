@@ -13,6 +13,7 @@ export interface Message {
 export interface ChatContextType {
   messages: Message[];
   addMessage: (content: string, type: MessageType) => void;
+  addSystemMessage: (content: string) => void;
   clearMessages: () => void;
   isTyping: boolean;
 }

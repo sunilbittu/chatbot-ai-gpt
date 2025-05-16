@@ -11,7 +11,7 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
-  const { addMessage, messages } = useChat();
+  const { addSystemMessage, messages } = useChat();
   const [isReporting, setIsReporting] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   
@@ -41,21 +41,21 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
       const data = await response.json();
 
       if (data.success) {
-        addMessage(`Thank you for reporting the issue. A ticket has been created and can be tracked at: ${data.issueUrl}`, 'text');
+        addSystemMessage(`Thank you for reporting the issue. A ticket has been created and can be tracked at: ${data.issueUrl}`);
       } else {
         const jiraContent = generateJiraContent();
-        addMessage(jiraContent, 'text');
+        addSystemMessage(jiraContent);
       }
     } catch (error) {
       const jiraContent = generateJiraContent();
-      addMessage(jiraContent, 'text');
+      addSystemMessage(jiraContent);
     } finally {
       setIsReporting(false);
     }
   };
 
   const handleContinueChat = () => {
-    addMessage("Let's continue our conversation.", 'text');
+    addSystemMessage("Let's continue our conversation.");
   };
 
   const handleCopyContent = async () => {
