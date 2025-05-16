@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, CheckCheck } from 'lucide-react';
+import { Check, CheckCheck, AlertTriangle } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
+import { useChat } from '../context/ChatContext';
 
 interface MessageItemProps {
   message: Message;
@@ -10,9 +11,19 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
+  const isError = message.type === 'error';
+  const { addMessage } = useChat();
+  
+  const handleReportIssue = () => {
+    addMessage("I'd like to report an issue with the chat.", 'text');
+  };
+
+  const handleContinueChat = () => {
+    addMessage("Let's continue our conversation.", 'text');
+  };
   
   const renderMessageStatus = () => {
-    if (message.sender === 'bot') return null;
+    if (message.sender === 'bot' || message.sender === 'system') return null;
     
     switch (message.status) {
       case 'sending':
@@ -44,6 +55,29 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-lg" />
           </div>
         );
+      case 'error':
+        return (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-red-500">
+              <AlertTriangle size={18} />
+              <p className="whitespace-pre-wrap">{message.content}</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleReportIssue}
+                className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm hover:bg-red-200 transition-colors"
+              >
+                Report Issue
+              </button>
+              <button
+                onClick={handleContinueChat}
+                className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm hover:bg-blue-200 transition-colors"
+              >
+                Continue Chat
+              </button>
+            </div>
+          </div>
+        );
       default:
         return <p className="whitespace-pre-wrap">{message.content}</p>;
     }
@@ -60,7 +94,9 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
         className={`max-w-xs md:max-w-md rounded-2xl p-3 shadow-sm ${
           isUser 
             ? 'bg-gradient-to-r from-blue-400 to-green-400 text-white'
-            : 'bg-white border border-gray-100'
+            : isError
+              ? 'bg-red-50 border border-red-100'
+              : 'bg-white border border-gray-100'
         }`}
       >
         {renderContent()}

@@ -17,9 +17,7 @@ export const delay = (ms: number): Promise<void> => {
 };
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-// Reduced context length to limit token usage
 const MAX_CONTEXT_LENGTH = 2;
-// Maximum characters for message content to prevent excessive tokens
 const MAX_MESSAGE_LENGTH = 2000;
 
 let conversationHistory: { role: 'user' | 'assistant'; content: string }[] = [];
@@ -31,13 +29,19 @@ const updateConversationHistory = (role: 'user' | 'assistant', content: string) 
   }
 };
 
-const handleAPIError = async (error: any): Promise<string> => {
+const handleAPIError = async (error: any): Promise<{ content: string; type: 'error' | 'text' }> => {
   if (error.response?.status === 429) {
     conversationHistory = [];
-    return "I apologize, but I've received too many messages or the request was too large. Please try sending a shorter message or starting a new conversation.";
+    return {
+      content: "I apologize, but I've received too many messages or the request was too large. Please try sending a shorter message or starting a new conversation.",
+      type: 'error'
+    };
   }
   console.error('Error getting bot response:', error.response?.data || error);
-  return "I apologize, but I'm having trouble processing your request at the moment. Please try again later.";
+  return {
+    content: "I apologize, but I'm having trouble processing your request at the moment. Please try again later.",
+    type: 'error'
+  };
 };
 
 const truncateMessage = (message: string): string => {
@@ -47,7 +51,7 @@ const truncateMessage = (message: string): string => {
   return message;
 };
 
-export const getBotResponse = async (message: string, imageUrl?: string): Promise<string> => {
+export const getBotResponse = async (message: string, imageUrl?: string): Promise<{ content: string; type: 'error' | 'text' }> => {
   try {
     if (!OPENAI_API_KEY) {
       throw new Error('OpenAI API key not found');
@@ -73,11 +77,10 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     }
 
     const isDetailedRequest = message.toLowerCase().includes("detailed") || message.toLowerCase().includes("in-depth");
-    // Reduced max tokens to prevent excessive response lengths
     const maxTokens = isDetailedRequest ? 400 : 200;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4-turbo',
       messages,
       max_tokens: maxTokens,
       temperature: 0.4,
@@ -88,7 +91,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     updateConversationHistory('user', truncatedMessage);
     updateConversationHistory('assistant', response);
 
-    return response;
+    return { content: response, type: 'text' };
   } catch (error: any) {
     return handleAPIError(error);
   }

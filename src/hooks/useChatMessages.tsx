@@ -47,44 +47,39 @@ export const useChatMessages = () => {
 
     setMessages(prev => [...prev, userMessage]);
     
-    // Update status to sent after a short delay
     await delay(500);
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'sent' } : msg
     ));
 
-    // Update status to delivered after another delay
     await delay(500);
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'delivered' } : msg
     ));
 
-    // Bot starts typing
     setIsTyping(true);
 
-    // Get bot response
-    let botResponse: string;
+    let botResponse;
     if (type === 'image') {
       botResponse = await getBotResponse("", content);
     } else {
       botResponse = await getBotResponse(content);
     }
     
-    // Bot stops typing and sends response
     setIsTyping(false);
 
     const botMessage: Message = {
       id: generateId(),
-      content: botResponse,
-      type: 'text',
-      sender: 'bot',
+      content: botResponse.content,
+      type: botResponse.type,
+      sender: botResponse.type === 'error' ? 'system' : 'bot',
       timestamp: new Date(),
-      status: 'sent'
+      status: 'sent',
+      error: botResponse.type === 'error'
     };
     
     setMessages(prev => [...prev, botMessage]);
 
-    // Update user message to read
     await delay(500);
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'read' } : msg
