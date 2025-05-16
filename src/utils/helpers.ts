@@ -63,7 +63,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     const truncatedMessage = truncateMessage(message);
     
     if (imageUrl) {
-      const imageContext = truncatedMessage || 'Summarise this image.';
+      const imageContext = truncatedMessage || 'Summarise this image.ss';
       messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\n`
@@ -77,7 +77,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     const maxTokens = isDetailedRequest ? 400 : 200;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4.1-mini',
+      model: 'gpt-4o-mini',
       messages,
       max_tokens: maxTokens,
       temperature: 0.4,
