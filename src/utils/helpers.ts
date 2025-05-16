@@ -70,7 +70,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
       model: 'gpt-4-turbo',
       messages,
       max_tokens: 200, // Reduced from 300 to 200
-      temperature: 0.7,
+      temperature: 0.5,
     });
 
     const response = completion.choices[0]?.message?.content || 'I apologize, but I cannot process your request at the moment.';
