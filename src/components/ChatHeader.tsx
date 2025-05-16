@@ -1,10 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, Trash2, MessageCircleMore } from 'lucide-react';
+import { MessageSquare, Trash2, MessageCircleMore, FileDown } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
+import { exportToPDF } from '../utils/pdf';
 
 const ChatHeader: React.FC = () => {
-  const { clearMessages, slackEnabled, toggleSlack } = useChat();
+  const { clearMessages, slackEnabled, toggleSlack, messages } = useChat();
+
+  const handleExport = () => {
+    exportToPDF(messages);
+  };
 
   return (
     <motion.div 
@@ -23,6 +28,15 @@ const ChatHeader: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handleExport}
+            className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            title="Export to PDF"
+          >
+            <FileDown size={20} />
+          </motion.button>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
