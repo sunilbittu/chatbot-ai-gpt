@@ -63,7 +63,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     const truncatedMessage = truncateMessage(message);
     
     if (imageUrl) {
-      const imageContext = truncatedMessage || 'Summarise this image. Keep it concise';
+      const imageContext = truncatedMessage || 'Summarise this image.';
       messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\n`
