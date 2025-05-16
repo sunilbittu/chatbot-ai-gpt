@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, CheckCheck, AlertTriangle } from 'lucide-react';
+import { Check, CheckCheck, Flag, MessageCircle } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
 import { useChat } from '../context/ChatContext';
@@ -11,7 +11,6 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
-  const isError = message.type === 'error';
   const { addMessage } = useChat();
   
   const handleReportIssue = () => {
@@ -42,7 +41,29 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const renderContent = () => {
     switch (message.type) {
       case 'text':
-        return <p className="whitespace-pre-wrap">{message.content}</p>;
+        return (
+          <div className="space-y-3">
+            <p className="whitespace-pre-wrap">{message.content}</p>
+            {message.sender === 'bot' && (
+              <div className="flex gap-2 mt-2">
+                <button
+                  onClick={handleReportIssue}
+                  className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-gray-200 transition-colors flex items-center gap-1"
+                >
+                  <Flag size={14} />
+                  Report Issue
+                </button>
+                <button
+                  onClick={handleContinueChat}
+                  className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm hover:bg-blue-200 transition-colors flex items-center gap-1"
+                >
+                  <MessageCircle size={14} />
+                  Continue Chat
+                </button>
+              </div>
+            )}
+          </div>
+        );
       case 'image':
         return (
           <div className="relative group">
@@ -53,29 +74,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               onClick={() => window.open(message.content, '_blank')}
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-lg" />
-          </div>
-        );
-      case 'error':
-        return (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-red-500">
-              <AlertTriangle size={18} />
-              <p className="whitespace-pre-wrap">{message.content}</p>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleReportIssue}
-                className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm hover:bg-red-200 transition-colors"
-              >
-                Report Issue
-              </button>
-              <button
-                onClick={handleContinueChat}
-                className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm hover:bg-blue-200 transition-colors"
-              >
-                Continue Chat
-              </button>
-            </div>
           </div>
         );
       default:
@@ -94,9 +92,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
         className={`max-w-xs md:max-w-md rounded-2xl p-3 shadow-sm ${
           isUser 
             ? 'bg-gradient-to-r from-blue-400 to-green-400 text-white'
-            : isError
-              ? 'bg-red-50 border border-red-100'
-              : 'bg-white border border-gray-100'
+            : 'bg-white border border-gray-100'
         }`}
       >
         {renderContent()}
