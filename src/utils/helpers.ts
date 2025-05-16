@@ -77,10 +77,10 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     const maxTokens = isDetailedRequest ? 400 : 200;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4.1-mini',
       messages,
       max_tokens: maxTokens,
-      temperature: 0.7,
+      temperature: 0.4,
     });
 
     const response = completion.choices[0]?.message?.content || 'I apologize, but I cannot process your request at the moment.';
