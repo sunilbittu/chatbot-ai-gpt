@@ -51,7 +51,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     let messages = [...conversationHistory];
     
     if (imageUrl) {
-      const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems.';
+      const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems. Keep it concise';
       messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\nPage Type: Dashboard\nExpected State: Fully loaded with all graphs visible`
