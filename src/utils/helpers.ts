@@ -17,7 +17,10 @@ export const delay = (ms: number): Promise<void> => {
 };
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-const MAX_CONTEXT_LENGTH = 2;
+// Reduced context length to limit token usage
+const MAX_CONTEXT_LENGTH = 1;
+// Maximum characters for message content to prevent excessive tokens
+const MAX_MESSAGE_LENGTH = 2000;
 
 let conversationHistory: { role: 'user' | 'assistant'; content: string }[] = [];
 
@@ -31,10 +34,17 @@ const updateConversationHistory = (role: 'user' | 'assistant', content: string) 
 const handleAPIError = async (error: any): Promise<string> => {
   if (error.response?.status === 429) {
     conversationHistory = [];
-    return "I apologize, but I've received too many messages. Let's start a new conversation.";
+    return "I apologize, but I've received too many messages or the request was too large. Please try sending a shorter message or starting a new conversation.";
   }
   console.error('Error getting bot response:', error.response?.data || error);
   return "I apologize, but I'm having trouble processing your request at the moment. Please try again later.";
+};
+
+const truncateMessage = (message: string): string => {
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return message.substring(0, MAX_MESSAGE_LENGTH) + '... (message truncated)';
+  }
+  return message;
 };
 
 export const getBotResponse = async (message: string, imageUrl?: string): Promise<string> => {
@@ -50,18 +60,21 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
 
     let messages = [...conversationHistory];
     
+    const truncatedMessage = truncateMessage(message);
+    
     if (imageUrl) {
-      const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems. Keep it concise';
+      const imageContext = truncatedMessage || 'Analyze this screenshot for UI issues and potential performance problems. Keep it concise';
       messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\nPage Type: Dashboard\nExpected State: Fully loaded with all graphs visible`
       });
     } else {
-      messages.push({ role: 'user', content: message });
+      messages.push({ role: 'user', content: truncatedMessage });
     }
 
     const isDetailedRequest = message.toLowerCase().includes("detailed") || message.toLowerCase().includes("in-depth");
-    const maxTokens = isDetailedRequest ? 800 : 400;
+    // Reduced max tokens to prevent excessive response lengths
+    const maxTokens = isDetailedRequest ? 400 : 200;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -72,7 +85,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
 
     const response = completion.choices[0]?.message?.content || 'I apologize, but I cannot process your request at the moment.';
     
-    updateConversationHistory('user', message);
+    updateConversationHistory('user', truncatedMessage);
     updateConversationHistory('assistant', response);
 
     return response;
