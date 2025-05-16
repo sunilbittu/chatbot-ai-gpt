@@ -18,7 +18,7 @@ export const delay = (ms: number): Promise<void> => {
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 // Reduced context length to limit token usage
-const MAX_CONTEXT_LENGTH = 1;
+const MAX_CONTEXT_LENGTH = 2;
 // Maximum characters for message content to prevent excessive tokens
 const MAX_MESSAGE_LENGTH = 2000;
 
@@ -63,7 +63,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     const truncatedMessage = truncateMessage(message);
     
     if (imageUrl) {
-      const imageContext = truncatedMessage || 'Analyze this screenshot for UI issues and potential performance problems. Keep it concise';
+      const imageContext = truncatedMessage || 'Analyze this image. Keep it concise';
       messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\nPage Type: Dashboard\nExpected State: Fully loaded with all graphs visible`
