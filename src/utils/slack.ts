@@ -1,18 +1,11 @@
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const API_URL = 'http://localhost:3000/api';
 
 export const createSlackChannel = async (name: string) => {
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/slack`, {
+    const response = await fetch(`${API_URL}/slack/channel`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({
-        action: 'createChannel',
-        name,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
     });
 
     if (!response.ok) {
@@ -29,18 +22,10 @@ export const createSlackChannel = async (name: string) => {
 
 export const postToSlack = async (channelId: string, message: string, sender: string) => {
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/slack`, {
+    const response = await fetch(`${API_URL}/slack/message`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({
-        action: 'postMessage',
-        channelId,
-        message,
-        sender,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channelId, message, sender }),
     });
 
     if (!response.ok) {
