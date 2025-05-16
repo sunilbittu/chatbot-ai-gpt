@@ -27,10 +27,9 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const handleReportIssue = async () => {
     setIsReporting(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-jira-issue`, {
+      const response = await fetch('http://localhost:3000/api/create-jira-issue', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
