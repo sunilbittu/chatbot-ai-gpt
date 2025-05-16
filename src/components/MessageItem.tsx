@@ -16,11 +16,12 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const [showCopied, setShowCopied] = useState(false);
   
   const generateJiraContent = () => {
-    const conversationText = messages
+    const title = 'Chat Assistant Issue Report';
+    const description = messages
       .map(msg => `${msg.sender.toUpperCase()}: ${msg.content}`)
       .join('\n\n');
 
-    return `Chat Assistant Issue Report\n\n${conversationText}`;
+    return `Title: ${title}\n\nDescription:\n${description}`;
   };
 
   const handleReportIssue = async () => {
@@ -43,11 +44,11 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
         addMessage(`Thank you for reporting the issue. A ticket has been created and can be tracked at: ${data.issueUrl}`, 'text');
       } else {
         const jiraContent = generateJiraContent();
-        addMessage(`Unable to create Jira ticket automatically. Please copy the content below and create a ticket manually:\n\n${jiraContent}`, 'text');
+        addMessage(jiraContent, 'text');
       }
     } catch (error) {
       const jiraContent = generateJiraContent();
-      addMessage(`Unable to create Jira ticket automatically. Please copy the content below and create a ticket manually:\n\n${jiraContent}`, 'text');
+      addMessage(jiraContent, 'text');
     } finally {
       setIsReporting(false);
     }
@@ -89,7 +90,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
           <div className="space-y-3">
             <div className="relative group">
               <p className="whitespace-pre-wrap">{message.content}</p>
-              {message.content.includes('Unable to create Jira ticket') && (
+              {message.content.includes('Title:') && (
                 <button
                   onClick={handleCopyContent}
                   className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-100 rounded-full"
@@ -104,7 +105,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                 </div>
               )}
             </div>
-            {message.sender === 'bot' && !message.content.includes('Unable to create Jira ticket') && (
+            {message.sender === 'bot' && !message.content.includes('Title:') && (
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={handleReportIssue}
