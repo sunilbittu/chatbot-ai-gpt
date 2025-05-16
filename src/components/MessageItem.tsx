@@ -17,30 +17,19 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const handleReportIssue = async () => {
     setIsReporting(true);
     try {
-      // Generate conversation history
       const conversationContext = messages
-        .slice(-5) // Get last 5 messages for context
+        .slice(-5)
         .map(msg => `${msg.sender.toUpperCase()}: ${msg.content}`)
         .join('\n\n');
 
       const issueReport = `# Issue Report
 
-## Summary
-User reported an issue with AI assistant response
-
-## Description
-### Recent Conversation Context:
+## Recent Conversation
 ${conversationContext}
-
-## Steps to Reproduce
-1. Review the conversation history above
-2. Note the specific response or behavior that caused concern
-3. Analyze the interaction pattern
 
 ## Additional Information
 - Timestamp: ${new Date().toISOString()}
-- Message Type: ${message.type}
-- Total Messages in Context: ${messages.length}`;
+- Message Type: ${message.type}`;
 
       addSystemMessage("Unable to connect to Jira. Here's the issue report for reference:\n\n" + issueReport);
     } finally {
