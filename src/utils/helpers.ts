@@ -54,14 +54,16 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     let messages = [...conversationHistory];
     
     if (imageUrl) {
-      // Simplified image analysis prompt
-      messages.push({
+    // More context-specific prompt for APM application
+    const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems.';
+    messages.push({
         role: 'user',
-        content: `${message || 'What is in this image?'} Image: ${imageUrl}`
-      });
-    } else {
-      messages.push({ role: 'user', content: message });
-    }
+        content: `${imageContext}\n\nImage URL: ${imageUrl}\nPage Type: Dashboard\nExpected State: Fully loaded with all graphs visible`
+    });
+} else {
+    messages.push({ role: 'user', content: message });
+}
+
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo',
