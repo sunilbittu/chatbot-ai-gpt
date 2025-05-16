@@ -59,7 +59,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
       <div
         className={`max-w-xs md:max-w-md rounded-2xl p-3 shadow-sm ${
           isUser 
-            ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white'
+            ? 'bg-gradient-to-r from-blue-400 to-green-400 text-white'
             : 'bg-white border border-gray-100'
         }`}
       >
@@ -73,4 +73,4 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   );
 };
 
-export default MessageItem
+export default MessageItem;

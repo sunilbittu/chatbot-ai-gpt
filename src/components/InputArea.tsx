@@ -43,7 +43,7 @@ const InputArea: React.FC = () => {
           whileTap={{ scale: 0.9 }}
           className={`p-3 rounded-full ${
             message.trim()
-              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+              ? 'bg-gradient-to-r from-blue-500 to-green-500 text-white'
               : 'bg-gray-200 text-gray-400'
           }`}
           onClick={handleSendMessage}

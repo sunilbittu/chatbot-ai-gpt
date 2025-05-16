@@ -10,16 +10,16 @@ const ChatHeader: React.FC = () => {
     <motion.div 
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="bg-gradient-to-r from-purple-300 to-pink-300 p-4 rounded-t-2xl shadow-sm"
+      className="bg-gradient-to-r from-blue-300 to-green-300 p-4 rounded-t-2xl shadow-sm"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="p-2 bg-white rounded-full mr-3">
-            <MessageSquare className="text-purple-500" size={24} />
+            <MessageSquare className="text-blue-500" size={24} />
           </div>
           <div>
             <h1 className="font-medium text-lg text-white">ChatAssist</h1>
-            <p className="text-purple-100 text-sm">Upload images, capture screens, or just chat</p>
+            <p className="text-blue-100 text-sm">Upload images, capture screens, or just chat</p>
           </div>
         </div>
         <motion.button

@@ -70,7 +70,7 @@ const ImageUpload: React.FC = () => {
             ? 'bg-green-200 text-green-600'
             : isUploading
               ? 'bg-yellow-200 text-yellow-600'
-              : 'bg-purple-100 text-purple-600'
+              : 'bg-blue-100 text-blue-600'
         }`}
         onClick={open}
         disabled={isUploading}
