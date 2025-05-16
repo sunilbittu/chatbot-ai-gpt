@@ -17,30 +17,10 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   
   const generateJiraContent = () => {
     const conversationText = messages
-      .map(msg => `*${msg.sender.toUpperCase()}*: ${msg.content}\n_Timestamp: ${new Date(msg.timestamp).toISOString()}_\n`)
-      .join('\n');
+      .map(msg => `${msg.sender.toUpperCase()}: ${msg.content}`)
+      .join('\n\n');
 
-    const jiraContent = `h2. Chat Assistant Issue Report
-
-h3. Summary
-User reported an issue during conversation
-
-h3. Description
-{noformat}
-${conversationText}
-{noformat}
-
-h3. Steps to Reproduce
-1. Review the conversation history above
-2. Note the context and any error messages
-3. Analyze the interaction flow
-
-h3. Additional Information
-- Timestamp of Report: ${new Date().toISOString()}
-- Total Messages: ${messages.length}
-- Last Message Type: ${message.type}`;
-
-    return jiraContent;
+    return `Chat Assistant Issue Report\n\n${conversationText}`;
   };
 
   const handleReportIssue = async () => {
