@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, CheckCheck, Flag, MessageCircle } from 'lucide-react';
+import { Check, CheckCheck, Flag, MessageCircle, Loader2 } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
 import { useChat } from '../context/ChatContext';
@@ -11,10 +11,35 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
-  const { addMessage } = useChat();
+  const { addMessage, messages } = useChat();
+  const [isReporting, setIsReporting] = useState(false);
   
-  const handleReportIssue = () => {
-    addMessage("I'd like to report an issue with the chat.", 'text');
+  const handleReportIssue = async () => {
+    setIsReporting(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-jira-issue`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          conversation: messages
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        addMessage(`Thank you for reporting the issue. A ticket has been created and can be tracked at: ${data.issueUrl}`, 'text');
+      } else {
+        addMessage('Sorry, there was an error creating the issue ticket. Please try again later.', 'text');
+      }
+    } catch (error) {
+      addMessage('Sorry, there was an error creating the issue ticket. Please try again later.', 'text');
+    } finally {
+      setIsReporting(false);
+    }
   };
 
   const handleContinueChat = () => {
@@ -48,9 +73,14 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={handleReportIssue}
-                  className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-gray-200 transition-colors flex items-center gap-1"
+                  disabled={isReporting}
+                  className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Flag size={14} />
+                  {isReporting ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Flag size={14} />
+                  )}
                   Report Issue
                 </button>
                 <button
