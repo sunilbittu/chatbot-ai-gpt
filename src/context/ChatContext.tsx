@@ -5,10 +5,10 @@ import { useChatMessages } from '../hooks/useChatMessages';
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { messages, addMessage, isTyping, messagesEndRef } = useChatMessages();
+  const { messages, addMessage, clearMessages, isTyping, messagesEndRef } = useChatMessages();
 
   return (
-    <ChatContext.Provider value={{ messages, addMessage, isTyping }}>
+    <ChatContext.Provider value={{ messages, addMessage, clearMessages, isTyping }}>
       {children}
       <div ref={messagesEndRef} />
     </ChatContext.Provider>

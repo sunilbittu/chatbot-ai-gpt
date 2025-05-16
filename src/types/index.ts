@@ -12,5 +12,6 @@ export interface Message {
 export interface ChatContextType {
   messages: Message[];
   addMessage: (content: string, type: MessageType) => void;
+  clearMessages: () => void;
   isTyping: boolean;
 }

@@ -24,6 +24,17 @@ export const useChatMessages = () => {
     scrollToBottom();
   }, [messages]);
 
+  const clearMessages = useCallback(() => {
+    setMessages([{
+      id: generateId(),
+      content: "Hi there! I'm your AI assistant. You can send me text messages or share images, and I'll help analyze and discuss them with you. How can I help you today?",
+      type: 'text',
+      sender: 'bot',
+      timestamp: new Date(),
+      status: 'read'
+    }]);
+  }, []);
+
   const addMessage = useCallback(async (content: string, type: MessageType) => {
     const userMessage: Message = {
       id: generateId(),
@@ -80,5 +91,5 @@ export const useChatMessages = () => {
     ));
   }, []);
 
-  return { messages, addMessage, isTyping, messagesEndRef };
+  return { messages, addMessage, clearMessages, isTyping, messagesEndRef };
 };
