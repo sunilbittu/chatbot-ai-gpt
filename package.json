@@ -5,6 +5,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@slack/web-api": "^6.11.2",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.330.0",
     "openai": "^4.28.0",

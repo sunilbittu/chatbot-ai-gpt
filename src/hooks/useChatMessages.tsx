@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Message, MessageType } from '../types';
+import { Message, MessageType, SlackConfig } from '../types';
 import { generateId, delay, getBotResponse } from '../utils/helpers';
+import { createSlackChannel, postToSlack } from '../utils/slack';
 
 export const useChatMessages = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -14,6 +15,7 @@ export const useChatMessages = () => {
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const [slackConfig, setSlackConfig] = useState<SlackConfig>({ enabled: false });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -24,6 +26,10 @@ export const useChatMessages = () => {
     scrollToBottom();
   }, [messages]);
 
+  const toggleSlack = useCallback(() => {
+    setSlackConfig(prev => ({ ...prev, enabled: !prev.enabled }));
+  }, []);
+
   const clearMessages = useCallback(() => {
     setMessages([{
       id: generateId(),
@@ -33,6 +39,7 @@ export const useChatMessages = () => {
       timestamp: new Date(),
       status: 'read'
     }]);
+    setSlackConfig(prev => ({ ...prev, channelId: undefined }));
   }, []);
 
   const addSystemMessage = useCallback((content: string) => {
@@ -59,6 +66,13 @@ export const useChatMessages = () => {
 
     setMessages(prev => [...prev, userMessage]);
     
+    if (slackConfig.enabled && !slackConfig.channelId) {
+      const channelId = await createSlackChannel(`chat-${generateId()}`);
+      if (channelId) {
+        setSlackConfig(prev => ({ ...prev, channelId }));
+      }
+    }
+
     await delay(500);
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'sent' } : msg
@@ -68,6 +82,10 @@ export const useChatMessages = () => {
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'delivered' } : msg
     ));
+
+    if (slackConfig.enabled && slackConfig.channelId) {
+      await postToSlack(slackConfig.channelId, content, 'User');
+    }
 
     setIsTyping(true);
 
@@ -92,11 +110,24 @@ export const useChatMessages = () => {
     
     setMessages(prev => [...prev, botMessage]);
 
+    if (slackConfig.enabled && slackConfig.channelId) {
+      await postToSlack(slackConfig.channelId, botResponse.content, 'Assistant');
+    }
+
     await delay(500);
     setMessages(prev => prev.map(msg => 
       msg.id === userMessage.id ? { ...msg, status: 'read' } : msg
     ));
-  }, []);
+  }, [slackConfig]);
 
-  return { messages, addMessage, addSystemMessage, clearMessages, isTyping, messagesEndRef };
+  return { 
+    messages, 
+    addMessage, 
+    addSystemMessage, 
+    clearMessages, 
+    isTyping, 
+    messagesEndRef,
+    slackEnabled: slackConfig.enabled,
+    toggleSlack
+  };
 };

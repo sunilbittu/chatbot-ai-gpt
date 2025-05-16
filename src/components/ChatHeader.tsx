@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, Trash2 } from 'lucide-react';
+import { MessageSquare, Trash2, MessageCircleMore } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 
 const ChatHeader: React.FC = () => {
-  const { clearMessages } = useChat();
+  const { clearMessages, slackEnabled, toggleSlack } = useChat();
 
   return (
     <motion.div 
@@ -22,15 +22,30 @@ const ChatHeader: React.FC = () => {
             <p className="text-blue-100 text-sm">Upload images, capture screens, or just chat</p>
           </div>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={clearMessages}
-          className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
-          title="Clear Chat"
-        >
-          <Trash2 size={20} />
-        </motion.button>
+        <div className="flex items-center gap-2">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleSlack}
+            className={`p-2 rounded-full transition-colors ${
+              slackEnabled 
+                ? 'bg-green-400 text-white' 
+                : 'bg-white/10 text-white'
+            }`}
+            title={slackEnabled ? "Slack Connected" : "Connect to Slack"}
+          >
+            <MessageCircleMore size={20} />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={clearMessages}
+            className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            title="Clear Chat"
+          >
+            <Trash2 size={20} />
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

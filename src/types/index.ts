@@ -16,4 +16,11 @@ export interface ChatContextType {
   addSystemMessage: (content: string) => void;
   clearMessages: () => void;
   isTyping: boolean;
+  slackEnabled: boolean;
+  toggleSlack: () => void;
+}
+
+export interface SlackConfig {
+  enabled: boolean;
+  channelId?: string;
 }
