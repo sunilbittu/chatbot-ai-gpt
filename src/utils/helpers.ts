@@ -54,6 +54,7 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     let messages = [...conversationHistory];
     
     if (imageUrl) {
+      console.log(imageUrl)
     // More context-specific prompt for APM application
     const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems.';
     messages.push({
