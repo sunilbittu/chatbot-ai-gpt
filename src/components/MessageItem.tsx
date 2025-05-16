@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, CheckCheck, Flag, MessageCircle, Loader2, Copy } from 'lucide-react';
+import { Check, CheckCheck, Flag, MessageCircle, Loader2 } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
 import { useChat } from '../context/ChatContext';
@@ -11,43 +11,13 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const isUser = message.sender === 'user';
-  const { addSystemMessage, messages } = useChat();
+  const { addSystemMessage } = useChat();
   const [isReporting, setIsReporting] = useState(false);
-  const [showCopied, setShowCopied] = useState(false);
   
-  const generateJiraContent = () => {
-    const title = 'Chat Assistant Issue Report';
-    const description = messages
-      .map(msg => `${msg.sender.toUpperCase()}: ${msg.content}`)
-      .join('\n\n');
-
-    return `Title: ${title}\n\nDescription:\n${description}`;
-  };
-
   const handleReportIssue = async () => {
     setIsReporting(true);
     try {
-      const response = await fetch('http://localhost:3000/api/create-jira-issue', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          conversation: messages
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        addSystemMessage(`Thank you for reporting the issue. A ticket has been created and can be tracked at: ${data.issueUrl}`);
-      } else {
-        const jiraContent = generateJiraContent();
-        addSystemMessage(jiraContent);
-      }
-    } catch (error) {
-      const jiraContent = generateJiraContent();
-      addSystemMessage(jiraContent);
+      addSystemMessage("Thank you for reporting the issue. Our team will review it shortly.");
     } finally {
       setIsReporting(false);
     }
@@ -55,14 +25,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 
   const handleContinueChat = () => {
     addSystemMessage("Let's continue our conversation.");
-  };
-
-  const handleCopyContent = async () => {
-    if (message.content) {
-      await navigator.clipboard.writeText(message.content);
-      setShowCopied(true);
-      setTimeout(() => setShowCopied(false), 2000);
-    }
   };
   
   const renderMessageStatus = () => {
@@ -89,22 +51,8 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
           <div className="space-y-3">
             <div className="relative group">
               <p className="whitespace-pre-wrap">{message.content}</p>
-              {message.content.includes('Title:') && (
-                <button
-                  onClick={handleCopyContent}
-                  className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-100 rounded-full"
-                  title="Copy content"
-                >
-                  <Copy size={14} />
-                </button>
-              )}
-              {showCopied && (
-                <div className="absolute top-0 right-8 bg-gray-800 text-white px-2 py-1 rounded text-xs">
-                  Copied!
-                </div>
-              )}
             </div>
-            {message.sender === 'bot' && !message.content.includes('Title:') && (
+            {message.sender === 'bot' && (
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={handleReportIssue}
@@ -169,5 +117,3 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
     </motion.div>
   );
 };
-
-export default MessageItem;
