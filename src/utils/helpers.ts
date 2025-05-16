@@ -57,6 +57,8 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
       console.log(imageUrl)
     // More context-specific prompt for APM application
     const imageContext = message || 'Analyze this screenshot for UI issues and potential performance problems.';
+      
+
     messages.push({
         role: 'user',
         content: `${imageContext}\n\nImage URL: ${imageUrl}\nPage Type: Dashboard\nExpected State: Fully loaded with all graphs visible`
@@ -65,6 +67,8 @@ export const getBotResponse = async (message: string, imageUrl?: string): Promis
     messages.push({ role: 'user', content: message });
 }
 
+    const isDetailedRequest = message.includes("detailed") || message.includes("in-depth");
+const maxTokens = isDetailedRequest ? 800 : 400;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
