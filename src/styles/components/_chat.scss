@@ -14,6 +14,23 @@
     @include gradient(to right, map-get($color-primary, light), map-get($color-secondary, light));
     padding: map-get($spacing, md);
     
+    &__content {
+      @include flex(row, space-between, center);
+    }
+    
+    &__logo {
+      @include flex(row, flex-start, center);
+      gap: map-get($spacing, sm);
+    }
+    
+    &__icon {
+      @include flex(row, center, center);
+      background-color: white;
+      padding: map-get($spacing, sm);
+      border-radius: map-get($border-radius, full);
+      color: map-get($color-primary, main);
+    }
+    
     &__title {
       color: white;
       font-size: map-get($font-size, lg);
@@ -24,30 +41,35 @@
       color: rgba(white, 0.8);
       font-size: map-get($font-size, sm);
     }
+    
+    &__actions {
+      @include flex(row, flex-end, center);
+      gap: map-get($spacing, sm);
+    }
+    
+    &__button {
+      @include button-base;
+      background-color: rgba(white, 0.1);
+      color: white;
+      
+      &:hover {
+        background-color: rgba(white, 0.2);
+      }
+      
+      &--active {
+        background-color: map-get($color-secondary, main);
+      }
+    }
   }
 
   &-messages {
     flex: 1;
     overflow-y: auto;
     padding: map-get($spacing, md);
-  }
-
-  &-input {
-    border-top: 1px solid map-get($color-gray, 100);
-    padding: map-get($spacing, md);
     
-    &__textarea {
-      width: 100%;
-      resize: none;
-      border: none;
-      outline: none;
-      background: map-get($color-gray, 50);
-      padding: map-get($spacing, sm);
-      border-radius: map-get($border-radius, lg);
-      
-      &::placeholder {
-        color: map-get($color-gray, 400);
-      }
+    &__container {
+      @include flex(column);
+      gap: map-get($spacing, md);
     }
   }
 }

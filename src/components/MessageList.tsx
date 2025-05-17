@@ -8,8 +8,8 @@ const MessageList: React.FC = () => {
   const { messages, isTyping } = useChat();
 
   return (
-    <div className="flex-1 overflow-y-auto p-4">
-      <div className="flex flex-col">
+    <div className="chat-messages">
+      <div className="chat-messages__container">
         {messages.map((message) => (
           <MessageItem key={message.id} message={message} />
         ))}

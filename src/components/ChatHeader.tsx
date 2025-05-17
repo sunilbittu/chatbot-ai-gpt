@@ -15,24 +15,24 @@ const ChatHeader: React.FC = () => {
     <motion.div 
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="bg-gradient-to-r from-blue-300 to-green-300 p-4 rounded-t-2xl shadow-sm"
+      className="chat-header"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="p-2 bg-white rounded-full mr-3">
-            <MessageSquare className="text-blue-500" size={24} />
+      <div className="chat-header__content">
+        <div className="chat-header__logo">
+          <div className="chat-header__icon">
+            <MessageSquare size={24} />
           </div>
           <div>
-            <h1 className="font-medium text-lg text-white">ChatAssist</h1>
-            <p className="text-blue-100 text-sm">Upload images, capture screens, or just chat</p>
+            <h1 className="chat-header__title">ChatAssist</h1>
+            <p className="chat-header__subtitle">Upload images, capture screens, or just chat</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="chat-header__actions">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleExport}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            className="chat-header__button"
             title="Export to PDF"
           >
             <FileDown size={20} />
@@ -41,11 +41,7 @@ const ChatHeader: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleSlack}
-            className={`p-2 rounded-full transition-colors ${
-              slackEnabled 
-                ? 'bg-green-400 text-white' 
-                : 'bg-white/10 text-white'
-            }`}
+            className={`chat-header__button ${slackEnabled ? 'chat-header__button--active' : ''}`}
             title={slackEnabled ? "Slack Connected" : "Connect to Slack"}
           >
             <MessageCircleMore size={20} />
@@ -54,7 +50,7 @@ const ChatHeader: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={clearMessages}
-            className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            className="chat-header__button"
             title="Clear Chat"
           >
             <Trash2 size={20} />

@@ -12,7 +12,7 @@ const ChatContainer: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md h-[550px] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col"
+        className="chat-container"
       >
         <ChatHeader />
         <MessageList />

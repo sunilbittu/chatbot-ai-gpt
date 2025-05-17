@@ -1,6 +1,6 @@
 .message {
   @include flex(column);
-  margin-bottom: map-get($spacing, md);
+  gap: map-get($spacing, xs);
   
   &--user {
     align-items: flex-end;
@@ -15,18 +15,95 @@
     align-items: flex-start;
     
     .message__content {
-      background: white;
+      background-color: white;
       border: 1px solid map-get($color-gray, 100);
     }
   }
   
   &__content {
     @include message-bubble;
+    
+    p {
+      white-space: pre-wrap;
+    }
+  }
+  
+  &__image {
+    max-width: 18rem;
+    max-height: 15rem;
+    object-fit: contain;
+    border-radius: map-get($border-radius, lg);
+    cursor: pointer;
+    
+    &:hover {
+      opacity: 0.95;
+    }
+  }
+  
+  &__actions {
+    @include flex(row);
+    gap: map-get($spacing, sm);
+    margin-top: map-get($spacing, sm);
+  }
+  
+  &__action-button {
+    @include flex(row, center, center);
+    gap: map-get($spacing, xs);
+    padding: map-get($spacing, xs) map-get($spacing, sm);
+    font-size: map-get($font-size, sm);
+    border-radius: map-get($border-radius, full);
+    background-color: map-get($color-gray, 100);
+    color: map-get($color-gray, 600);
+    
+    &:hover {
+      background-color: map-get($color-gray, 200);
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    &--primary {
+      background-color: map-get($color-primary, light);
+      color: map-get($color-primary, dark);
+      
+      &:hover {
+        background-color: lighten(map-get($color-primary, light), 5%);
+      }
+    }
+  }
+  
+  &__meta {
+    @include flex(row, flex-start, center);
+    gap: map-get($spacing, xs);
   }
   
   &__timestamp {
     font-size: map-get($font-size, xs);
     color: map-get($color-gray, 500);
-    margin-top: map-get($spacing, xs);
+  }
+  
+  &__status {
+    @include flex(row, center, center);
+    color: map-get($color-gray, 400);
+    
+    &-dot {
+      width: 3px;
+      height: 3px;
+      background-color: currentColor;
+      border-radius: map-get($border-radius, full);
+      animation: pulse 1.5s infinite;
+    }
+    
+    &--read {
+      color: map-get($color-primary, main);
+    }
+  }
+  
+  &__action-icon {
+    &--spin {
+      animation: spin 1s linear infinite;
+    }
   }
 }
