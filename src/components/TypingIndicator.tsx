@@ -7,14 +7,14 @@ const TypingIndicator: React.FC = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
-      className="flex items-start mb-4"
+      className="message message--bot"
     >
-      <div className="bg-white p-3 rounded-2xl shadow-sm">
-        <div className="flex space-x-1">
+      <div className="message__content">
+        <div className="typing-indicator">
           {[0, 1, 2].map(i => (
             <motion.div
               key={i}
-              className="w-2 h-2 rounded-full bg-blue-300"
+              className="typing-indicator__dot"
               animate={{
                 y: [0, -5, 0],
               }}

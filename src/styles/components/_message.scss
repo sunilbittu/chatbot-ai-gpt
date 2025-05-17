@@ -122,6 +122,19 @@
   }
 }
 
+.typing-indicator {
+  @include flex(row, center, center);
+  gap: map-get($spacing, xs);
+  padding: map-get($spacing, xs);
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    background-color: map-get($color-primary, light);
+    border-radius: map-get($border-radius, full);
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
