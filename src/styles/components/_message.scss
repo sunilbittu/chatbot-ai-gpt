@@ -46,7 +46,7 @@
   &__actions {
     @include flex(row);
     gap: map-get($spacing, xs);
-    margin-top: map-get($spacing, xs);
+    margin-top: map-get($spacing, sm);
   }
   
   &__action-button {
@@ -54,12 +54,13 @@
     gap: map-get($spacing, xs);
     padding: map-get($spacing, xs) map-get($spacing, sm);
     font-size: map-get($font-size, xs);
-    border-radius: map-get($border-radius, full);
-    background-color: map-get($color-gray, 100);
-    color: map-get($color-gray, 600);
+    border-radius: map-get($border-radius, md);
+    background-color: map-get($color-gray, 50);
+    color: map-get($color-gray, 500);
+    height: 24px;
     
     &:hover {
-      background-color: map-get($color-gray, 200);
+      background-color: map-get($color-gray, 100);
     }
     
     &:disabled {
