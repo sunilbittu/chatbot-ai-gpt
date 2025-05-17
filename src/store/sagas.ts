@@ -45,11 +45,14 @@ function* handleAddMessage(action: AddMessageAction) {
     }
   });
 
-  // Get bot response
+  // Set typing indicator before getting bot response
   yield put(setTyping(true));
   
   try {
     const botResponse = yield call(getBotResponse, content, messageType === 'image' ? content : undefined);
+    
+    // Small delay to ensure typing indicator is visible
+    yield delay(1000);
     
     yield put({
       type: ADD_MESSAGE_SUCCESS,
@@ -86,6 +89,8 @@ function* handleAddMessage(action: AddMessageAction) {
       }
     });
   } finally {
+    // Ensure typing indicator is hidden after response
+    yield delay(500);
     yield put(setTyping(false));
   }
 }
