@@ -3,3 +3,11 @@
 @import 'base/reset';
 @import 'components/chat';
 @import 'components/message';
+@import 'components/input';
+
+.app {
+  min-height: 100vh;
+  @include gradient(to bottom, map-get($color-primary, light), map-get($color-secondary, light));
+  @include flex(column, center, center);
+  padding: map-get($spacing, md);
+}

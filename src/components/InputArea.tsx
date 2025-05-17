@@ -25,31 +25,27 @@ const InputArea: React.FC = () => {
   };
 
   return (
-    <div className="border-t border-gray-100 bg-white p-4">
-      <div className="flex items-end gap-2">
+    <div className="input-area">
+      <div className="input-area__container">
         <ImageUpload />
         
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsDetailed(!isDetailed)}
-          className={`p-2 rounded-full ${
-            isDetailed 
-              ? 'bg-green-100 text-green-600' 
-              : 'bg-gray-100 text-gray-600'
-          }`}
+          className={`input-area__mode-button ${isDetailed ? 'input-area__mode-button--active' : ''}`}
           title={isDetailed ? "Detailed Analysis Mode" : "Normal Mode"}
         >
           {isDetailed ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
         </motion.button>
         
-        <div className="flex-1 bg-gray-100 rounded-2xl p-2">
+        <div className="input-area__input-wrapper">
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={isDetailed ? "Ask for detailed analysis..." : "Type a message..."}
-            className="w-full bg-transparent border-none outline-none resize-none min-h-[40px] max-h-[120px]"
+            className="input-area__input"
             rows={1}
           />
         </div>
@@ -57,11 +53,7 @@ const InputArea: React.FC = () => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className={`p-3 rounded-full ${
-            message.trim()
-              ? 'bg-gradient-to-r from-blue-500 to-green-500 text-white'
-              : 'bg-gray-200 text-gray-400'
-          }`}
+          className={`input-area__send-button ${message.trim() ? 'input-area__send-button--active' : ''}`}
           onClick={handleSendMessage}
           disabled={!message.trim()}
         >
@@ -69,7 +61,7 @@ const InputArea: React.FC = () => {
         </motion.button>
       </div>
       {isDetailed && (
-        <div className="mt-2 text-xs text-gray-500 text-center">
+        <div className="input-area__mode-indicator">
           Detailed analysis mode enabled - Responses will be more comprehensive
         </div>
       )}

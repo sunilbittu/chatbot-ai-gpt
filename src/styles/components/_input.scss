@@ -1,0 +1,100 @@
+.input-area {
+  border-top: 1px solid map-get($color-gray, 100);
+  background-color: map-get($color-background, default);
+  padding: map-get($spacing, md);
+
+  &__container {
+    @include flex(row, flex-start, flex-end);
+    gap: map-get($spacing, sm);
+  }
+
+  &__mode-button {
+    @include button-base;
+    background-color: map-get($color-gray, 100);
+    color: map-get($color-gray, 600);
+
+    &--active {
+      background-color: map-get($color-secondary, light);
+      color: map-get($color-secondary, dark);
+    }
+  }
+
+  &__input-wrapper {
+    flex: 1;
+    background-color: map-get($color-gray, 100);
+    border-radius: map-get($border-radius, xl);
+    padding: map-get($spacing, sm);
+  }
+
+  &__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    min-height: 40px;
+    max-height: 120px;
+    
+    &::placeholder {
+      color: map-get($color-gray, 400);
+    }
+  }
+
+  &__send-button {
+    @include button-base;
+    padding: map-get($spacing, md);
+    background-color: map-get($color-gray, 200);
+    color: map-get($color-gray, 400);
+
+    &--active {
+      @include gradient(to right, map-get($color-primary, main), map-get($color-secondary, main));
+      color: white;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__mode-indicator {
+    text-align: center;
+    margin-top: map-get($spacing, sm);
+    font-size: map-get($font-size, xs);
+    color: map-get($color-gray, 500);
+  }
+}
+
+.image-upload {
+  position: relative;
+
+  &__button {
+    @include button-base;
+    background-color: map-get($color-primary, light);
+    color: map-get($color-primary, dark);
+
+    &--drag-active {
+      background-color: map-get($color-secondary, light);
+      color: map-get($color-secondary, dark);
+    }
+
+    &--uploading {
+      background-color: map-get($color-secondary, light);
+      color: map-get($color-secondary, dark);
+      cursor: wait;
+    }
+  }
+
+  &__drag-indicator {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: map-get($spacing, sm);
+    white-space: nowrap;
+    background-color: map-get($color-secondary, light);
+    color: map-get($color-secondary, dark);
+    padding: map-get($spacing, xs) map-get($spacing, sm);
+    border-radius: map-get($border-radius, full);
+    font-size: map-get($font-size, sm);
+  }
+}

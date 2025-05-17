@@ -60,17 +60,15 @@ const ImageUpload: React.FC = () => {
   }, [handleImage]);
 
   return (
-    <div {...getRootProps()} className="relative">
+    <div {...getRootProps()} className="image-upload">
       <input {...getInputProps()} />
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        className={`p-2 rounded-full ${
-          isDragActive
-            ? 'bg-green-200 text-green-600'
-            : isUploading
-              ? 'bg-yellow-200 text-yellow-600'
-              : 'bg-blue-100 text-blue-600'
+        className={`image-upload__button ${
+          isDragActive ? 'image-upload__button--drag-active' :
+          isUploading ? 'image-upload__button--uploading' :
+          ''
         }`}
         onClick={open}
         disabled={isUploading}
@@ -79,7 +77,7 @@ const ImageUpload: React.FC = () => {
         <ImageIcon size={20} />
       </motion.button>
       {isDragActive && (
-        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+        <div className="image-upload__drag-indicator">
           Drop image here
         </div>
       )}
