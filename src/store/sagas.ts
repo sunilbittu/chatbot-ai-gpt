@@ -11,12 +11,13 @@ import { createSlackChannel, postToSlack } from '../utils/slack';
 
 function* handleAddMessage(action: AddMessageAction) {
   const { content, messageType } = action.payload;
+  const messageId = generateId();
   
-  // Add user message
+  // Add initial user message
   yield put({
     type: ADD_MESSAGE_SUCCESS,
     payload: {
-      id: generateId(),
+      id: messageId,
       content,
       type: messageType,
       sender: 'user',
@@ -28,26 +29,18 @@ function* handleAddMessage(action: AddMessageAction) {
   // Update message status
   yield delay(500);
   yield put({
-    type: ADD_MESSAGE_SUCCESS,
+    type: 'UPDATE_MESSAGE_STATUS',
     payload: {
-      id: generateId(),
-      content,
-      type: messageType,
-      sender: 'user',
-      timestamp: new Date(),
+      id: messageId,
       status: 'sent'
     }
   });
 
   yield delay(500);
   yield put({
-    type: ADD_MESSAGE_SUCCESS,
+    type: 'UPDATE_MESSAGE_STATUS',
     payload: {
-      id: generateId(),
-      content,
-      type: messageType,
-      sender: 'user',
-      timestamp: new Date(),
+      id: messageId,
       status: 'delivered'
     }
   });
@@ -68,6 +61,15 @@ function* handleAddMessage(action: AddMessageAction) {
         timestamp: new Date(),
         status: 'sent',
         error: botResponse.type === 'error'
+      }
+    });
+
+    // Mark user message as read after bot responds
+    yield put({
+      type: 'UPDATE_MESSAGE_STATUS',
+      payload: {
+        id: messageId,
+        status: 'read'
       }
     });
   } catch (error) {

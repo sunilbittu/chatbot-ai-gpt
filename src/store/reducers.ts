@@ -3,6 +3,7 @@ import {
   ChatState,
   ChatActionTypes,
   ADD_MESSAGE_SUCCESS,
+  UPDATE_MESSAGE_STATUS,
   ADD_SYSTEM_MESSAGE,
   CLEAR_MESSAGES,
   SET_TYPING,
@@ -29,6 +30,16 @@ const chatReducer = (state = initialState, action: ChatActionTypes): ChatState =
       return {
         ...state,
         messages: [...state.messages, action.payload]
+      };
+    
+    case UPDATE_MESSAGE_STATUS:
+      return {
+        ...state,
+        messages: state.messages.map(message =>
+          message.id === action.payload.id
+            ? { ...message, status: action.payload.status }
+            : message
+        )
       };
     
     case ADD_SYSTEM_MESSAGE:
