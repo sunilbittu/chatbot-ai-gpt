@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, CheckCheck, Flag, MessageCircle, Loader2 } from 'lucide-react';
+import { Check, CheckCheck, Flag, MessageCircle, Loader2, Copy } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
 import { useAppDispatch } from '../hooks/useAppDispatch';
@@ -16,6 +16,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   const messages = useAppSelector(state => state.chat.messages);
   const isUser = message.sender === 'user';
   const [isReporting, setIsReporting] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   
   const handleReportIssue = async () => {
     setIsReporting(true);
@@ -37,6 +38,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
     dispatch(addSystemMessage("Let's continue our conversation."));
   };
 
+  const handleCopyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(message.content);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy message:', err);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -52,7 +63,16 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
             className="message__image"
           />
         ) : (
-          <p>{message.content}</p>
+          <>
+            <p>{message.content}</p>
+            <button
+              onClick={handleCopyMessage}
+              className="message__copy-button"
+              title={isCopied ? "Copied!" : "Copy message"}
+            >
+              <Copy size={14} className={isCopied ? "message__copy-icon--success" : ""} />
+            </button>
+          </>
         )}
         
         {message.sender === 'bot' && (

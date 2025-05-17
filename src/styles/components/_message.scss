@@ -24,10 +24,42 @@
     @include message-bubble;
     max-width: 240px;
     padding: map-get($spacing, sm);
+    position: relative;
     
     p {
       white-space: pre-wrap;
       font-size: map-get($font-size, sm);
+    }
+  }
+  
+  &__copy-button {
+    position: absolute;
+    top: map-get($spacing, xs);
+    right: map-get($spacing, xs);
+    padding: map-get($spacing, xs);
+    border-radius: map-get($border-radius, sm);
+    opacity: 0;
+    transition: all 0.2s ease;
+    background-color: rgba(map-get($color-gray, 100), 0.8);
+    color: map-get($color-gray, 600);
+    
+    .message__content:hover & {
+      opacity: 1;
+    }
+    
+    &:hover {
+      background-color: map-get($color-gray, 200);
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  &__copy-icon {
+    &--success {
+      color: map-get($color-secondary, main);
     }
   }
   
