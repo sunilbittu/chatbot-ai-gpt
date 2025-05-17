@@ -1,15 +1,16 @@
 .input-area {
   border-top: 1px solid map-get($color-gray, 100);
   background-color: map-get($color-background, default);
-  padding: map-get($spacing, md);
+  padding: map-get($spacing, sm);
 
   &__container {
     @include flex(row, flex-start, flex-end);
-    gap: map-get($spacing, sm);
+    gap: map-get($spacing, xs);
   }
 
   &__mode-button {
     @include button-base;
+    padding: map-get($spacing, xs);
     background-color: map-get($color-gray, 100);
     color: map-get($color-gray, 600);
 
@@ -23,7 +24,7 @@
     flex: 1;
     background-color: map-get($color-gray, 100);
     border-radius: map-get($border-radius, xl);
-    padding: map-get($spacing, sm);
+    padding: map-get($spacing, xs);
   }
 
   &__input {
@@ -32,8 +33,9 @@
     border: none;
     outline: none;
     resize: none;
-    min-height: 40px;
-    max-height: 120px;
+    min-height: 36px;
+    max-height: 100px;
+    font-size: map-get($font-size, sm);
     
     &::placeholder {
       color: map-get($color-gray, 400);
@@ -42,7 +44,7 @@
 
   &__send-button {
     @include button-base;
-    padding: map-get($spacing, md);
+    padding: map-get($spacing, sm);
     background-color: map-get($color-gray, 200);
     color: map-get($color-gray, 400);
 
@@ -58,7 +60,7 @@
 
   &__mode-indicator {
     text-align: center;
-    margin-top: map-get($spacing, sm);
+    margin-top: map-get($spacing, xs);
     font-size: map-get($font-size, xs);
     color: map-get($color-gray, 500);
   }
@@ -69,6 +71,7 @@
 
   &__button {
     @include button-base;
+    padding: map-get($spacing, xs);
     background-color: map-get($color-primary, light);
     color: map-get($color-primary, dark);
 
@@ -89,12 +92,12 @@
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: map-get($spacing, sm);
+    margin-bottom: map-get($spacing, xs);
     white-space: nowrap;
     background-color: map-get($color-secondary, light);
     color: map-get($color-secondary, dark);
     padding: map-get($spacing, xs) map-get($spacing, sm);
     border-radius: map-get($border-radius, full);
-    font-size: map-get($font-size, sm);
+    font-size: map-get($font-size, xs);
   }
 }

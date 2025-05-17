@@ -2,17 +2,17 @@
   &-container {
     @include flex(column);
     width: 100%;
-    max-width: 28rem;
-    height: 550px;
+    max-width: 320px;
+    height: 100vh;
     background-color: map-get($color-background, default);
-    border-radius: map-get($border-radius, xl);
-    box-shadow: map-get($shadow, lg);
+    box-shadow: none;
+    border-radius: 0;
     overflow: hidden;
   }
 
   &-header {
     @include gradient(to right, map-get($color-primary, light), map-get($color-secondary, light));
-    padding: map-get($spacing, md);
+    padding: map-get($spacing, sm);
     
     &__content {
       @include flex(row, space-between, center);
@@ -20,35 +20,36 @@
     
     &__logo {
       @include flex(row, flex-start, center);
-      gap: map-get($spacing, sm);
+      gap: map-get($spacing, xs);
     }
     
     &__icon {
       @include flex(row, center, center);
       background-color: white;
-      padding: map-get($spacing, sm);
+      padding: map-get($spacing, xs);
       border-radius: map-get($border-radius, full);
       color: map-get($color-primary, main);
     }
     
     &__title {
       color: white;
-      font-size: map-get($font-size, lg);
+      font-size: map-get($font-size, base);
       font-weight: map-get($font-weight, medium);
     }
     
     &__subtitle {
       color: rgba(white, 0.8);
-      font-size: map-get($font-size, sm);
+      font-size: map-get($font-size, xs);
     }
     
     &__actions {
       @include flex(row, flex-end, center);
-      gap: map-get($spacing, sm);
+      gap: map-get($spacing, xs);
     }
     
     &__button {
       @include button-base;
+      padding: map-get($spacing, xs);
       background-color: rgba(white, 0.1);
       color: white;
       
@@ -65,11 +66,11 @@
   &-messages {
     flex: 1;
     overflow-y: auto;
-    padding: map-get($spacing, md);
+    padding: map-get($spacing, sm);
     
     &__container {
       @include flex(column);
-      gap: map-get($spacing, md);
+      gap: map-get($spacing, sm);
     }
   }
 }
