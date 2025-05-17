@@ -51,13 +51,11 @@
   
   &__action-button {
     @include flex(row, center, center);
-    gap: map-get($spacing, xs);
-    padding: map-get($spacing, xs) map-get($spacing, sm);
-    font-size: map-get($font-size, xs);
+    width: 24px;
+    height: 24px;
     border-radius: map-get($border-radius, md);
     background-color: map-get($color-gray, 50);
     color: map-get($color-gray, 500);
-    height: 24px;
     
     &:hover {
       background-color: map-get($color-gray, 100);
@@ -109,5 +107,23 @@
     &--spin {
       animation: spin 1s linear infinite;
     }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }

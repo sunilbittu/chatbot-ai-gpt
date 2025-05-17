@@ -58,20 +58,20 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
               onClick={handleReportIssue}
               disabled={isReporting}
               className="message__action-button"
+              title="Report Issue"
             >
               {isReporting ? (
                 <Loader2 size={14} className="message__action-icon--spin" />
               ) : (
                 <Flag size={14} />
               )}
-              Report Issue
             </button>
             <button
               onClick={handleContinueChat}
               className="message__action-button message__action-button--primary"
+              title="Continue Chat"
             >
               <MessageCircle size={14} />
-              Continue Chat
             </button>
           </div>
         )}
