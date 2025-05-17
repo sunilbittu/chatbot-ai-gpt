@@ -44,7 +44,7 @@
   }
   
   &__actions {
-    @include flex(row);
+    @include flex(row, flex-end);
     gap: map-get($spacing, xs);
     margin-top: map-get($spacing, sm);
   }
@@ -54,16 +54,28 @@
     width: 24px;
     height: 24px;
     border-radius: map-get($border-radius, md);
-    background-color: map-get($color-gray, 50);
-    color: map-get($color-gray, 500);
+    transition: all 0.2s ease;
     
     &:hover {
-      background-color: map-get($color-gray, 100);
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.95);
     }
     
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+    
+    &:first-child {
+      background-color: map-get($color-secondary, light);
+      color: map-get($color-secondary, dark);
+      
+      &:hover {
+        background-color: lighten(map-get($color-secondary, light), 5%);
+      }
     }
     
     &--primary {
