@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Check, CheckCheck, Flag, MessageCircle, Loader2 } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
-import { useAppDispatch, useAppSelector } from '../hooks/useAppDispatch';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { addSystemMessage } from '../store/actions';
 
 interface MessageItemProps {

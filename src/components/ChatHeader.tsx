@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trash2, MessageCircleMore, FileDown } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '../hooks/useAppDispatch';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { clearMessages, toggleSlack } from '../store/actions';
 import { exportToPDF } from '../utils/pdf';
 
