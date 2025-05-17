@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trash2, MessageCircleMore, FileDown } from 'lucide-react';
-import { useChat } from '../context/ChatContext';
+import { useAppDispatch, useAppSelector } from '../hooks/useAppDispatch';
+import { clearMessages, toggleSlack } from '../store/actions';
 import { exportToPDF } from '../utils/pdf';
 
 const ChatHeader: React.FC = () => {
-  const { clearMessages, slackEnabled, toggleSlack, messages } = useChat();
+  const dispatch = useAppDispatch();
+  const { messages, slackEnabled } = useAppSelector(state => state.chat);
 
   const handleExport = () => {
     exportToPDF(messages);
@@ -37,7 +39,7 @@ const ChatHeader: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={toggleSlack}
+            onClick={() => dispatch(toggleSlack())}
             className={`chat-header__button ${slackEnabled ? 'chat-header__button--active' : ''}`}
             title={slackEnabled ? "Slack Connected" : "Connect to Slack"}
           >
@@ -46,7 +48,7 @@ const ChatHeader: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={clearMessages}
+            onClick={() => dispatch(clearMessages())}
             className="chat-header__button"
             title="Clear Chat"
           >

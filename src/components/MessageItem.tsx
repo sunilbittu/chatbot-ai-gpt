@@ -3,15 +3,17 @@ import { motion } from 'framer-motion';
 import { Check, CheckCheck, Flag, MessageCircle, Loader2 } from 'lucide-react';
 import { Message } from '../types';
 import { formatTimestamp } from '../utils/helpers';
-import { useChat } from '../context/ChatContext';
+import { useAppDispatch, useAppSelector } from '../hooks/useAppDispatch';
+import { addSystemMessage } from '../store/actions';
 
 interface MessageItemProps {
   message: Message;
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector(state => state.chat.messages);
   const isUser = message.sender === 'user';
-  const { addSystemMessage, messages } = useChat();
   const [isReporting, setIsReporting] = useState(false);
   
   const handleReportIssue = async () => {
@@ -24,14 +26,14 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 
       const issueReport = `# Issue Report\n\n## Recent Conversation\n${conversationContext}`;
 
-      addSystemMessage("Unable to connect to Jira. Here's the issue report for reference:\n\n" + issueReport);
+      dispatch(addSystemMessage("Unable to connect to Jira. Here's the issue report for reference:\n\n" + issueReport));
     } finally {
       setIsReporting(false);
     }
   };
 
   const handleContinueChat = () => {
-    addSystemMessage("Let's continue our conversation.");
+    dispatch(addSystemMessage("Let's continue our conversation."));
   };
 
   return (

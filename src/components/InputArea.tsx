@@ -1,18 +1,19 @@
 import React, { useState, KeyboardEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Maximize2, Minimize2 } from 'lucide-react';
-import { useChat } from '../context/ChatContext';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { addMessage } from '../store/actions';
 import ImageUpload from './ImageUpload';
 
 const InputArea: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [message, setMessage] = useState('');
   const [isDetailed, setIsDetailed] = useState(false);
-  const { addMessage } = useChat();
 
   const handleSendMessage = () => {
     if (message.trim()) {
       const detailedPrefix = isDetailed ? "Please provide a detailed analysis of the following: " : "";
-      addMessage(detailedPrefix + message.trim(), 'text');
+      dispatch(addMessage(detailedPrefix + message.trim(), 'text'));
       setMessage('');
     }
   };

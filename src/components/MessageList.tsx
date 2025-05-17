@@ -2,10 +2,10 @@ import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import MessageItem from './MessageItem';
 import TypingIndicator from './TypingIndicator';
-import { useChat } from '../context/ChatContext';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 const MessageList: React.FC = () => {
-  const { messages, isTyping } = useChat();
+  const { messages, isTyping } = useAppSelector(state => state.chat);
 
   return (
     <div className="chat-messages">

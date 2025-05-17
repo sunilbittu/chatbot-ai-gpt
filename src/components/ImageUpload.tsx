@@ -2,10 +2,11 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { Image as ImageIcon } from 'lucide-react';
-import { useChat } from '../context/ChatContext';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { addMessage } from '../store/actions';
 
 const ImageUpload: React.FC = () => {
-  const { addMessage } = useChat();
+  const dispatch = useAppDispatch();
   const [isUploading, setIsUploading] = useState(false);
 
   const handleImage = useCallback((file: File) => {
@@ -14,12 +15,12 @@ const ImageUpload: React.FC = () => {
     const reader = new FileReader();
     reader.onload = () => {
       const dataUrl = reader.result as string;
-      addMessage(dataUrl, 'image');
+      dispatch(addMessage(dataUrl, 'image'));
       setIsUploading(false);
     };
     
     reader.readAsDataURL(file);
-  }, [addMessage]);
+  }, [dispatch]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
