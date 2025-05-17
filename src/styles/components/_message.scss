@@ -1,0 +1,32 @@
+.message {
+  @include flex(column);
+  margin-bottom: map-get($spacing, md);
+  
+  &--user {
+    align-items: flex-end;
+    
+    .message__content {
+      @include gradient(to right, map-get($color-primary, main), map-get($color-secondary, main));
+      color: white;
+    }
+  }
+  
+  &--bot {
+    align-items: flex-start;
+    
+    .message__content {
+      background: white;
+      border: 1px solid map-get($color-gray, 100);
+    }
+  }
+  
+  &__content {
+    @include message-bubble;
+  }
+  
+  &__timestamp {
+    font-size: map-get($font-size, xs);
+    color: map-get($color-gray, 500);
+    margin-top: map-get($spacing, xs);
+  }
+}

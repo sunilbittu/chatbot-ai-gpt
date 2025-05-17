@@ -1,0 +1,53 @@
+.chat {
+  &-container {
+    @include flex(column);
+    width: 100%;
+    max-width: 28rem;
+    height: 550px;
+    background-color: map-get($color-background, default);
+    border-radius: map-get($border-radius, xl);
+    box-shadow: map-get($shadow, lg);
+    overflow: hidden;
+  }
+
+  &-header {
+    @include gradient(to right, map-get($color-primary, light), map-get($color-secondary, light));
+    padding: map-get($spacing, md);
+    
+    &__title {
+      color: white;
+      font-size: map-get($font-size, lg);
+      font-weight: map-get($font-weight, medium);
+    }
+    
+    &__subtitle {
+      color: rgba(white, 0.8);
+      font-size: map-get($font-size, sm);
+    }
+  }
+
+  &-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: map-get($spacing, md);
+  }
+
+  &-input {
+    border-top: 1px solid map-get($color-gray, 100);
+    padding: map-get($spacing, md);
+    
+    &__textarea {
+      width: 100%;
+      resize: none;
+      border: none;
+      outline: none;
+      background: map-get($color-gray, 50);
+      padding: map-get($spacing, sm);
+      border-radius: map-get($border-radius, lg);
+      
+      &::placeholder {
+        color: map-get($color-gray, 400);
+      }
+    }
+  }
+}

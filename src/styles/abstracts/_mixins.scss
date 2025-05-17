@@ -1,0 +1,32 @@
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin gradient($direction, $from, $to) {
+  background: linear-gradient($direction, $from, $to);
+}
+
+@mixin button-base {
+  padding: map-get($spacing, sm) map-get($spacing, md);
+  border-radius: map-get($border-radius, full);
+  transition: transform 0.2s, background-color 0.2s;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@mixin message-bubble {
+  max-width: 18rem;
+  padding: map-get($spacing, md);
+  border-radius: map-get($border-radius, xl);
+  box-shadow: map-get($shadow, sm);
+}
