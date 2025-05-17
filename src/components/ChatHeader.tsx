@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, Trash2, MessageCircleMore, FileDown } from 'lucide-react';
+import { Trash2, MessageCircleMore, FileDown } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
 import { exportToPDF } from '../utils/pdf';
 
@@ -19,9 +19,6 @@ const ChatHeader: React.FC = () => {
     >
       <div className="chat-header__content">
         <div className="chat-header__logo">
-          <div className="chat-header__icon">
-            <MessageSquare size={24} />
-          </div>
           <div>
             <h1 className="chat-header__title">ChatAssist</h1>
             <p className="chat-header__subtitle">Upload images, capture screens, or just chat</p>

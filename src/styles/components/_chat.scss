@@ -20,15 +20,6 @@
     
     &__logo {
       @include flex(row, flex-start, center);
-      gap: map-get($spacing, xs);
-    }
-    
-    &__icon {
-      @include flex(row, center, center);
-      background-color: white;
-      padding: map-get($spacing, xs);
-      border-radius: map-get($border-radius, full);
-      color: map-get($color-primary, main);
     }
     
     &__title {
